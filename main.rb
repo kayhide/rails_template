@@ -221,3 +221,20 @@ Dir['**/.keep'].each do |f|
   end
 end
 
+
+# git
+# ============================================================
+remove_file '.gitignore'
+create_file '.gitignore', <<EOS
+#{open(File.expand_path('../gitignore/Rails.gitignore', __FILE__)).read}
+#{open(File.expand_path('../gitignore/OSX.gitignore', __FILE__)).read}
+EOS
+
+comment_lines '.gitignore', '.rspec'
+comment_lines '.gitignore', 'config/initializers/secret_token.rb'
+comment_lines '.gitignore', 'config/secrets.yml'
+comment_lines '.gitignore', '.rvmrc'
+
+remove_comments '.gitignore'
+
+git :init

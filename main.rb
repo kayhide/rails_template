@@ -167,7 +167,16 @@ namespace :db do
   end
 end
 EOS
+end
 
-  remove_file 'lib/tasks/.keep'
+
+# remove .keep
+# ============================================================
+
+Dir['**/.keep'].each do |f|
+  if Dir[File.join(File.dirname(f), '*')].present?
+    puts Dir[File.join(File.dirname(f), '*')]
+    remove_file f
+  end
 end
 

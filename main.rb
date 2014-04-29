@@ -150,3 +150,24 @@ Dir['config/environments/*.rb'].each do |f|
   remove_comments f
 end
 
+
+# postgresql
+# ============================================================
+
+if gem_for_database == 'pg'
+  rakefile 'db_create_user.rake', <<'EOS'
+namespace :db do
+  desc 'Creates postgres user for all environments.'
+  task :create_user => :environment do
+    Rails.configuration.database_configuration.map do |env, conf|
+      conf['username']
+    end.uniq.compact.each do |username|
+      `createuser -e -s -d #{username}`
+    end
+  end
+end
+EOS
+
+  remove_file 'lib/tasks/.keep'
+end
+

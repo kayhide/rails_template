@@ -292,3 +292,10 @@ comment_lines '.gitignore', '.rvmrc'
 remove_comments '.gitignore'
 
 git :init
+
+
+# capistrano
+# ============================================================
+if @use_capistrano
+  apply File.expand_path('../capistrano.rb', __FILE__)
+end

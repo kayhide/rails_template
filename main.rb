@@ -37,6 +37,10 @@ comment_lines 'Gemfile', /unicorn/
 comment_lines 'Gemfile', /spring/
 remove_comments 'Gemfile'
 
+inject_into_file 'Gemfile', <<EOS, before: /gem 'rails'/
+ruby '#{RUBY_VERSION}'
+EOS
+
 gem 'unicorn'
 gem 'foreman'
 gem 'pry-rails'

@@ -120,16 +120,16 @@ run_bundle
 
 # config/application.rb
 # ============================================================
+remove_comments 'config/application.rb'
 application <<EOS.strip
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
-    config.i18n.default_locale = :ja
+    # config.i18n.default_locale = :ja
 
     config.generators do |g|
       g.orm :active_record
       g.test_framework :rspec, fixture: true, fixture_replacement: :factory_girl
       g.view_specs false
-      g.controller_specs false
       g.routing_specs false
       g.helper_specs false
       g.request_specs false
@@ -137,8 +137,6 @@ application <<EOS.strip
       g.helper false
     end
 EOS
-
-remove_comments 'config/application.rb'
 
 
 # config/environments
@@ -150,6 +148,11 @@ EOS
 Dir['config/environments/*.rb'].each do |f|
   remove_comments f
 end
+
+
+# turbolinks
+# ============================================================
+gsub_file 'app/assets/javascripts/application.js', /^.*turbolinks.*\n/, ''
 
 
 # postgresql
@@ -251,12 +254,7 @@ if @use_bootstrap
   generate 'bootstrap:install', 'less'
   generate 'bootstrap:layout'
   remove_file 'app/views/layouts/application.html.erb'
-
-  append_to_file 'app/assets/stylesheets/application.css', <<EOS
-body { padding-top: 60px; }
-EOS
 end
-
 
 # kaminari
 # ============================================================

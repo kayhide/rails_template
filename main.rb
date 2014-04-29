@@ -202,6 +202,20 @@ end
 remove_dir 'test'
 
 
+# guard
+# ============================================================
+run 'bundle exec guard init'
+gsub_file 'Guardfile', /guard :rspec/, <<EOS.strip
+guard :rspec, cmd: 'spring rspec'
+EOS
+
+inject_into_file 'Guardfile', <<EOS, before: /^end$/
+
+  # FactoryGirl
+  watch(%r{^spec/factories/(.+)\.rb$})                { |m| ["spec/controllers", "spec/requests"] }
+EOS
+
+
 # unicorn
 # ============================================================
 copy_file File.expand_path('../config/unicorn.rb', __FILE__), 'config/unicorn.rb'

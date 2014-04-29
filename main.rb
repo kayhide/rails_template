@@ -112,3 +112,41 @@ if @use_heroku
   end
 end
 
+run_bundle
+
+
+# config/application.rb
+# ============================================================
+
+application <<EOS.strip
+    config.active_record.default_timezone = :local
+    config.time_zone = 'Tokyo'
+    config.i18n.default_locale = :ja
+
+    config.generators do |g|
+      g.orm :active_record
+      g.test_framework :rspec, fixture: true, fixture_replacement: :factory_girl
+      g.view_specs false
+      g.controller_specs false
+      g.routing_specs false
+      g.helper_specs false
+      g.request_specs false
+      g.assets false
+      g.helper false
+    end
+EOS
+
+remove_comments 'config/application.rb'
+
+
+# config/environments
+# ============================================================
+
+environment <<EOS, env: :development
+config.action_mailer.delivery_method = :letter_opener
+EOS
+
+Dir['config/environments/*.rb'].each do |f|
+  remove_comments f
+end
+

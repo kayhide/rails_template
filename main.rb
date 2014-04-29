@@ -169,6 +169,13 @@ end
 EOS
 end
 
+inject_into_file 'config/database.yml', <<EOS, after: /  pool:.*\n/
+  username: #{app_name}
+  password:
+EOS
+
+remove_comments 'config/database.yml'
+
 
 # rspec
 # ============================================================

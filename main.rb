@@ -237,6 +237,19 @@ PORT=8080
 EOS
 
 
+# bootstrap
+# ============================================================
+if @use_bootstrap
+  generate 'bootstrap:install', 'less'
+  generate 'bootstrap:layout'
+  remove_file 'app/views/layouts/application.html.erb'
+
+  append_to_file 'app/assets/stylesheets/application.css', <<EOS
+body { padding-top: 60px; }
+EOS
+end
+
+
 # remove .keep
 # ============================================================
 Dir['**/.keep'].each do |f|

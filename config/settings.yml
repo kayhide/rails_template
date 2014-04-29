@@ -1,0 +1,11 @@
+defaults: &defaults
+  dummy: dummy
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -212,6 +212,12 @@ end
 remove_dir 'test'
 
 
+# settingslogic
+# ============================================================
+copy_file File.expand_path('../config/settings.yml', __FILE__), 'config/settings.yml'
+copy_file File.expand_path('../app/models/settings.rb', __FILE__), 'app/models/settings.rb'
+
+
 # guard
 # ============================================================
 run 'bundle exec guard init'

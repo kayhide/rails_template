@@ -31,7 +31,6 @@ end
 
 # Gemfile
 # ============================================================
-
 comment_lines 'Gemfile', /turbolinks/
 comment_lines 'Gemfile', /sdoc/
 comment_lines 'Gemfile', /unicorn/
@@ -117,7 +116,6 @@ run_bundle
 
 # config/application.rb
 # ============================================================
-
 application <<EOS.strip
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
@@ -141,7 +139,6 @@ remove_comments 'config/application.rb'
 
 # config/environments
 # ============================================================
-
 environment <<EOS, env: :development
 config.action_mailer.delivery_method = :letter_opener
 EOS
@@ -153,7 +150,6 @@ end
 
 # postgresql
 # ============================================================
-
 if gem_for_database == 'pg'
   rakefile 'db_create_user.rake', <<'EOS'
 namespace :db do
@@ -172,7 +168,6 @@ end
 
 # rspec
 # ============================================================
-
 generate 'rspec:install'
 
 append_to_file '.rspec', <<EOS
@@ -202,9 +197,23 @@ end
 
 remove_dir 'test'
 
+
+# unicorn
+# ============================================================
+copy_file File.expand_path('../config/unicorn.rb', __FILE__), 'config/unicorn.rb'
+create_file 'Procfile' do
+  body = <<EOS
+web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+EOS
+end
+
+create_file '.env', <<EOS
+PORT=8080
+EOS
+
+
 # remove .keep
 # ============================================================
-
 Dir['**/.keep'].each do |f|
   if Dir[File.join(File.dirname(f), '*')].present?
     puts Dir[File.join(File.dirname(f), '*')]

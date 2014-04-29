@@ -237,6 +237,14 @@ PORT=8080
 EOS
 
 
+# rails_footnotes
+# ============================================================
+generate 'rails_footnotes:install'
+gsub_file 'config/initializers/rails_footnotes.rb', /^Footnotes/, <<EOS.strip
+defined?(Footnotes) && Footnotes
+EOS
+
+
 # bootstrap
 # ============================================================
 if @use_bootstrap

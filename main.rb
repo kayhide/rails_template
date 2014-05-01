@@ -43,12 +43,15 @@ EOS
 
 gem 'unicorn'
 gem 'foreman'
-gem 'pry-rails'
 gem 'slim-rails'
 gem 'redcarpet'
 gem 'kaminari'
 gem 'settingslogic'
 insert_breakline 'Gemfile'
+
+gem 'pry-rails'
+gem "hirb"
+gem "hirb-unicode"
 
 if @use_bootstrap
   gem 'therubyracer'
@@ -216,6 +219,11 @@ remove_dir 'test'
 # ============================================================
 copy_file File.expand_path('../config/settings.yml', __FILE__), 'config/settings.yml'
 copy_file File.expand_path('../app/models/settings.rb', __FILE__), 'app/models/settings.rb'
+
+
+# hirb
+# ============================================================
+copy_file File.expand_path('../config/initializers/hirb.rb', __FILE__), 'config/initializers/hirb.rb'
 
 
 # guard

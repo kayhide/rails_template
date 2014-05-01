@@ -272,6 +272,18 @@ else
 end
 
 
+# capistrano
+# ============================================================
+if @use_capistrano
+  apply File.expand_path('../capistrano.rb', __FILE__)
+end
+
+
+# binstubs
+# ============================================================
+generate_spring_binstubs
+
+
 # remove .keep
 # ============================================================
 Dir['**/.keep'].each do |f|
@@ -298,10 +310,5 @@ comment_lines '.gitignore', '.rvmrc'
 remove_comments '.gitignore'
 
 git :init
-
-
-# capistrano
-# ============================================================
-if @use_capistrano
-  apply File.expand_path('../capistrano.rb', __FILE__)
-end
+git add: '.'
+git commit: '-m "init."'

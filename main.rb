@@ -52,13 +52,13 @@ gem 'settingslogic'
 insert_breakline 'Gemfile'
 
 gem 'pry-rails'
-gem "hirb"
-gem "hirb-unicode"
+gem 'hirb'
+gem 'hirb-unicode'
+insert_breakline 'Gemfile'
 
 if @use_bootstrap
-  gem 'therubyracer'
-  gem 'less-rails'
-  gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
+  gem 'bootstrap-sass'
+  gem 'font-awesome-rails'
   insert_breakline 'Gemfile'
 end
 
@@ -267,9 +267,25 @@ EOS
 # bootstrap
 # ============================================================
 if @use_bootstrap
-  generate 'bootstrap:install', 'less'
-  generate 'bootstrap:layout'
-  remove_file 'app/views/layouts/application.html.erb'
+  inside 'app/assets/stylesheets' do
+    copy_file 'application.css', 'application.css.scss'
+    append_to_file 'application.css.scss', <<EOS
+
+@import 'bootstrap';
+@import 'font-awesome';
+EOS
+    remove_file 'application.css'
+  end
+  inside 'app/assets/javascripts' do
+    inject_into_file 'application.js', <<EOS, before: '//= require_tree .'
+//= require bootstrap
+EOS
+    remove_file 'application.css'
+  end
+  inside 'app/views/layouts' do
+    template 'application.html.slim'
+    remove_file 'application.html.erb'
+  end
 end
 
 # kaminari

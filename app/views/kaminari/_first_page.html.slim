@@ -7,7 +7,7 @@
     remote       : data-remote
 li.first class="#{'disabled' if current_page.first?}"
   - if current_page.first?
-    span= t('views.pagination.first')
+    span= t('views.pagination.first').html_safe
   - else
     == link_to t('views.pagination.first').html_safe, url, :remote => remote
 '

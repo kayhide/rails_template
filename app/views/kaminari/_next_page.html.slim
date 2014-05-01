@@ -7,7 +7,7 @@
     remote       : data-remote
 li.next class="#{'disabled' if current_page.last?}"
   - if current_page.last?
-    span= t('views.pagination.next')
+    span= t('views.pagination.next').html_safe
   - else
     == link_to t('views.pagination.next').html_safe, url, :rel => 'next', :remote => remote
 '

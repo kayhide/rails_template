@@ -120,6 +120,7 @@ if @use_heroku
   end
 end
 
+gsub_file 'Gemfile', '"', '\''
 run_bundle
 
 
@@ -230,16 +231,7 @@ copy_file 'config/initializers/hirb.rb'
 
 # guard
 # ============================================================
-run 'bundle exec guard init'
-gsub_file 'Guardfile', /guard :rspec/, <<EOS.strip
-guard :rspec, cmd: 'spring rspec'
-EOS
-
-inject_into_file 'Guardfile', <<EOS, before: /^end$/
-
-  # FactoryGirl
-  watch(%r{^spec/factories/(.+)\.rb$})                { |m| ["spec/controllers", "spec/requests"] }
-EOS
+apply 'guard.rb'
 
 
 # unicorn

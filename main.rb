@@ -256,25 +256,7 @@ apply 'rails_footnotes.rb'
 # bootstrap
 # ============================================================
 if @use_bootstrap
-  inside 'app/assets/stylesheets' do
-    copy_file 'application.css', 'application.css.scss'
-    append_to_file 'application.css.scss', <<EOS
-
-@import 'bootstrap';
-@import 'font-awesome';
-EOS
-    remove_file 'application.css'
-  end
-  inside 'app/assets/javascripts' do
-    inject_into_file 'application.js', <<EOS, before: '//= require_tree .'
-//= require bootstrap
-EOS
-    remove_file 'application.css'
-  end
-  inside 'app/views/layouts' do
-    template 'application.html.slim'
-    remove_file 'application.html.erb'
-  end
+  apply 'bootstrap.rb'
 end
 
 

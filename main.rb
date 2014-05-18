@@ -250,10 +250,7 @@ EOS
 
 # rails_footnotes
 # ============================================================
-generate 'rails_footnotes:install'
-gsub_file 'config/initializers/rails_footnotes.rb', /^Footnotes/, <<EOS.strip
-defined?(Footnotes) && Footnotes
-EOS
+apply 'rails_footnotes.rb'
 
 
 # bootstrap
@@ -279,6 +276,7 @@ EOS
     remove_file 'application.html.erb'
   end
 end
+
 
 # kaminari
 # ============================================================

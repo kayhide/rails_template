@@ -96,6 +96,7 @@ gem_group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'rails-footnotes'
+  gem 'rails-erd'
 end
 
 gem_group :test do

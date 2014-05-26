@@ -5,7 +5,6 @@ inside 'app/assets/stylesheets' do
     body = <<EOS
 @import 'bootstrap';
 @import 'font-awesome';
-@import '**/*';
 EOS
   end
 

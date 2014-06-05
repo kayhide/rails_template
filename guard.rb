@@ -6,5 +6,5 @@ EOS
 inject_into_file 'Guardfile', <<EOS, after: /^guard :rspec.*\n(\n|  .*\n)*/
 
   # FactoryGirl
-  watch(%r{^spec/factories/(.+)\.rb$})                { |m| ["spec/controllers", "spec/requests"] }
+  watch(%r{^spec/factories/(.+)\\.rb$})                { |m| Dir["spec/controllers", "spec/requests"] }
 EOS

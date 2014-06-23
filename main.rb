@@ -46,7 +46,7 @@ EOS
 gem 'unicorn'
 gem 'foreman'
 gem 'slim-rails'
-gem 'redcarpet'
+gem 'kramdown'
 gem 'kaminari'
 gem 'settingslogic'
 insert_breakline 'Gemfile'
@@ -58,6 +58,7 @@ insert_breakline 'Gemfile'
 
 if @use_bootstrap
   gem 'bootstrap-sass'
+  gem 'bootstrap-sass-extras'
   gem 'font-awesome-rails'
   insert_breakline 'Gemfile'
 end

@@ -133,6 +133,7 @@ application <<EOS.strip
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
     # config.i18n.default_locale = :ja
+    # config.i18n.available_locales = [:ja]
 
     config.generators do |g|
       g.orm :active_record

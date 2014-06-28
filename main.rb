@@ -197,16 +197,16 @@ append_to_file '.rspec', <<EOS
 EOS
 
 inside 'spec' do
-  prepend_to_file 'spec_helper.rb', <<EOS
+  prepend_to_file 'rails_helper.rb', <<EOS
 require 'simplecov'
 SimpleCov.start 'rails'
 
 EOS
 
-  comment_lines 'spec_helper.rb', 'config.fixture_path'
-  comment_lines 'spec_helper.rb', 'rspec/autorun'
+  comment_lines 'rails_helper.rb', 'config.fixture_path'
+  comment_lines 'rails_helper.rb', 'rspec/autorun'
 
-  inject_into_file 'spec_helper.rb', <<EOS, before: /^end$/
+  inject_into_file 'rails_helper.rb', <<EOS, before: /^end$/
 
   config.before do
     FactoryGirl.reload
@@ -214,7 +214,7 @@ EOS
 EOS
 
 
-  remove_comments 'spec_helper.rb'
+  remove_comments 'rails_helper.rb'
 end
 
 remove_dir 'test'

@@ -7,18 +7,27 @@ source_paths << File.dirname(__FILE__)
 @keep_comments = false
 
 if ENV['USE_SEMANTIC_UI']
+  say 'use heroku? [yes]'
   @use_bootstrap = false
   @use_semantic_ui = true
 end
 
-if ENV['USE_HEROKU']
+if ENV['USE_HEROKU'] || yes?('use heroku?')
+  say 'use heroku: [yes]'
   @use_capistrano = false
   @use_heroku = true
+else
+  say 'use heroku: [no]'
 end
 
-if ENV['KEEP_COMMENTS']
+if ENV['KEEP_COMMENTS'] || yes?('keep comments?')
+  say 'keep comments: [yes]'
   @keep_comments = true
+else
+  say 'keep comments: [no]'
 end
+
+ask('press key...')
 
 def remove_comments file
   unless @keep_comments

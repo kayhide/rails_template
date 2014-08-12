@@ -48,7 +48,7 @@ comment_lines 'Gemfile', /unicorn/
 comment_lines 'Gemfile', /spring/
 remove_comments 'Gemfile'
 
-inject_into_file 'Gemfile', <<EOS, before: /gem 'rails'/
+inject_into_file 'Gemfile', <<EOS, before: /^gem 'rails'/
 ruby '#{RUBY_VERSION}'
 EOS
 
@@ -58,11 +58,6 @@ gem 'slim-rails'
 gem 'kramdown'
 gem 'kaminari'
 gem 'settingslogic'
-insert_breakline 'Gemfile'
-
-gem 'pry-rails'
-gem 'hirb'
-gem 'hirb-unicode'
 insert_breakline 'Gemfile'
 
 if @use_bootstrap
@@ -80,12 +75,15 @@ if @use_semantic_ui
   insert_breakline 'Gemfile'
 end
 
+gem 'pry-rails'
+gem 'awesome_print'
+insert_breakline 'Gemfile'
+
 gem_group :development, :test do
   gem 'pry-doc'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'tapp'
-  gem 'awesome_print'
   gem 'quiet_assets'
   insert_breakline 'Gemfile'
 
@@ -234,11 +232,6 @@ remove_dir 'test'
 # ============================================================
 copy_file 'config/settings.yml'
 copy_file 'app/models/settings.rb'
-
-
-# hirb
-# ============================================================
-copy_file 'config/initializers/hirb.rb'
 
 
 # guard

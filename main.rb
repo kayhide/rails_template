@@ -75,6 +75,9 @@ if @use_semantic_ui
   insert_breakline 'Gemfile'
 end
 
+gem 'rails-i18n'
+insert_breakline 'Gemfile'
+
 gem 'pry-rails'
 gem 'awesome_print'
 insert_breakline 'Gemfile'

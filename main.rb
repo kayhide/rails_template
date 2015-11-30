@@ -43,6 +43,7 @@ end
 # Gemfile
 # ============================================================
 comment_lines 'Gemfile', /turbolinks/
+comment_lines 'Gemfile', /jbuilder/
 comment_lines 'Gemfile', /sdoc/
 comment_lines 'Gemfile', /unicorn/
 comment_lines 'Gemfile', /spring/
@@ -55,25 +56,14 @@ EOS
 gem 'unicorn'
 gem 'foreman'
 gem 'slim-rails'
-gem 'kramdown'
 gem 'kaminari'
 gem 'settingslogic'
 insert_breakline 'Gemfile'
 
-if @use_bootstrap
-  gem 'bootstrap-sass'
-  gem 'bootstrap-sass-extras'
-  gem 'font-awesome-rails'
-  insert_breakline 'Gemfile'
-end
-
-if @use_semantic_ui
-  gem 'therubyracer'
-  gem 'less-rails'
-  gem 'autoprefixer-rails'
-  gem 'semantic-ui-rails'
-  insert_breakline 'Gemfile'
-end
+gem 'bootstrap-sass'
+gem 'font-awesome-rails'
+gem 'compass-rails'
+insert_breakline 'Gemfile'
 
 gem 'rails-i18n'
 insert_breakline 'Gemfile'
@@ -88,6 +78,8 @@ gem_group :development, :test do
   gem 'pry-stack_explorer'
   gem 'tapp'
   gem 'quiet_assets'
+  gem 'dotenv-rails'
+  gem 'factory_girl_rails'
   insert_breakline 'Gemfile'
 
   gem 'rspec-rails'
@@ -97,17 +89,14 @@ gem_group :development, :test do
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-livereload', require: false
-  gem 'factory_girl_rails'
 end
 
 gem_group :development do
-  gem 'rack-mini-profiler'
+  gem 'web-console'
   gem 'letter_opener'
-  gem 'meta_request'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'rails-footnotes'
-  gem 'rails-erd'
 end
 
 gem_group :test do
@@ -251,7 +240,7 @@ web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 EOS
 end
 
-create_file '.env', <<EOS
+create_file '.env.sample', <<EOS
 PORT=8080
 EOS
 
@@ -304,6 +293,8 @@ end
 # ============================================================
 remove_file '.gitignore'
 create_file '.gitignore', <<EOS
+.env
+
 #{open(File.expand_path('../gitignore/Rails.gitignore', __FILE__)).read}
 #{open(File.expand_path('../gitignore/OSX.gitignore', __FILE__)).read}
 EOS

@@ -1,23 +1,22 @@
 source_paths << File.dirname(__FILE__)
 
+@locale = nil
 @use_bootstrap = true
-@use_semantic_ui = false
-@use_capistrano = true
 @use_heroku = false
+@use_capistrano = false
 @keep_comments = false
-
-if ENV['USE_SEMANTIC_UI']
-  say 'use heroku? [yes]'
-  @use_bootstrap = false
-  @use_semantic_ui = true
-end
 
 if ENV['USE_HEROKU'] || yes?('use heroku?')
   say 'use heroku: [yes]'
-  @use_capistrano = false
   @use_heroku = true
 else
   say 'use heroku: [no]'
+  if ENV['USE_CAPISTRANO'] || yes?('use capistrano?')
+    say 'use capistrano: [yes]'
+    @use_capistrano = true
+  else
+    say 'use capistrano: [no]'
+  end
 end
 
 if ENV['KEEP_COMMENTS'] || yes?('keep comments?')
@@ -27,10 +26,18 @@ else
   say 'keep comments: [no]'
 end
 
+if (@locale = ask("locale?")).empty?
+  @locale = (ENV['LANG'] || 'en').split('_').first
+end
+say "locale: [#{@locale}]"
+
 ask('press key...')
 
-def remove_comments file
-  unless @keep_comments
+if @keep_comments
+  def remove_comments _
+  end
+else
+  def remove_comments file
     gsub_file file, /^[ \t]*#.*\n\n*/, ''
   end
 end
@@ -122,7 +129,6 @@ if @use_heroku
 end
 
 gsub_file 'Gemfile', '"', '\''
-run_bundle
 
 
 # config/application.rb
@@ -131,8 +137,8 @@ remove_comments 'config/application.rb'
 application <<EOS.strip
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
-    # config.i18n.default_locale = :ja
-    # config.i18n.available_locales = [:ja]
+    config.i18n.default_locale = :#{@locale}
+    config.i18n.available_locales = [:#{@locale}]
 
     config.generators do |g|
       g.orm :active_record
@@ -158,6 +164,16 @@ Dir['config/environments/*.rb'].each do |f|
 end
 
 
+# config/locales
+# ============================================================
+source_paths.each do |dir|
+  Dir[File.join(dir, "**/locales/*#{@locale}.yml")].each do |f|
+    f = Pathname.new(f).relative_path_from(Pathname.new(dir)).to_s
+    template f
+  end
+end
+
+
 # turbolinks
 # ============================================================
 gsub_file 'app/assets/javascripts/application.js', /^.*turbolinks.*\n/, ''
@@ -180,12 +196,17 @@ end
 EOS
 end
 
-inject_into_file 'config/database.yml', <<EOS, after: /  pool:.*\n/
+gsub_file 'config/database.yml', /  pool:.*\n/, <<EOS
+  pool: <%= ENV['DB_POOL'] || ENV['MAX_THREADS'] || 5 %>
   username: #{app_name}
   password:
 EOS
 
 remove_comments 'config/database.yml'
+
+create_file '.env.sample', <<EOS
+export DB_POOL=5
+EOS
 
 
 # rspec
@@ -240,10 +261,6 @@ web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 EOS
 end
 
-create_file '.env.sample', <<EOS
-PORT=8080
-EOS
-
 
 # rails_footnotes
 # ============================================================
@@ -274,16 +291,10 @@ if @use_capistrano
 end
 
 
-# binstubs
-# ============================================================
-generate_spring_binstubs
-
-
 # remove .keep
 # ============================================================
 Dir['**/.keep'].each do |f|
   if Dir[File.join(File.dirname(f), '*')].present?
-    puts Dir[File.join(File.dirname(f), '*')]
     remove_file f
   end
 end
@@ -300,7 +311,6 @@ create_file '.gitignore', <<EOS
 EOS
 
 comment_lines '.gitignore', '.rspec'
-comment_lines '.gitignore', 'config/initializers/secret_token.rb'
 comment_lines '.gitignore', 'config/secrets.yml'
 comment_lines '.gitignore', '.rvmrc'
 

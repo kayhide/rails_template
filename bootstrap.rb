@@ -5,7 +5,7 @@ inside 'app/assets/stylesheets' do
     body = <<EOS
 @import 'bootstrap';
 @import 'font-awesome';
-@import "compass";
+@import 'compass';
 EOS
   end
 
@@ -16,7 +16,6 @@ inside 'app/assets/javascripts' do
   inject_into_file 'application.js', <<EOS, before: '//= require_tree .'
 //= require bootstrap
 EOS
-  remove_file 'application.css'
 end
 
 inside 'app/views/layouts' do

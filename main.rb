@@ -135,10 +135,11 @@ gsub_file 'Gemfile', '"', '\''
 # ============================================================
 remove_comments 'config/application.rb'
 application <<EOS.strip
-    config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
     config.i18n.default_locale = :#{@locale}
     config.i18n.available_locales = [:#{@locale}]
+    config.active_record.default_timezone = :local
+    config.active_record.raise_in_transactional_callbacks = true
 
     config.generators do |g|
       g.orm :active_record
@@ -157,6 +158,10 @@ EOS
 # ============================================================
 environment <<EOS, env: :development
 config.action_mailer.delivery_method = :letter_opener
+EOS
+
+environment <<EOS, env: :test
+config.active_job.queue_adapter = :test
 EOS
 
 Dir['config/environments/*.rb'].each do |f|

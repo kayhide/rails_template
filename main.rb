@@ -143,7 +143,6 @@ application <<EOS.strip
     config.i18n.default_locale = :#{@locale}
     config.i18n.available_locales = [:#{@locale}]
     config.active_record.default_timezone = :local
-    config.active_record.raise_in_transactional_callbacks = true
 
     config.generators do |g|
       g.orm :active_record

@@ -301,15 +301,11 @@ remove_file '.gitignore'
 create_file '.gitignore', <<EOS
 .env
 
-#{open(File.expand_path('../gitignore/Rails.gitignore', __FILE__)).read}
-#{open(File.expand_path('../gitignore/OSX.gitignore', __FILE__)).read}
+#{`gibo rails osx`}
 EOS
 
 comment_lines '.gitignore', '.rspec'
 comment_lines '.gitignore', 'config/secrets.yml'
-comment_lines '.gitignore', '.rvmrc'
-
-remove_comments '.gitignore'
 
 git :init
 git add: '.'

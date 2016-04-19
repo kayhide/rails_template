@@ -90,6 +90,7 @@ gem_group :development, :test do
   gem 'quiet_assets'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
+  gem 'rack-livereload'
   insert_breakline 'Gemfile'
 
   gem 'rspec-rails'
@@ -159,6 +160,10 @@ EOS
 
 # config/environments
 # ============================================================
+environment <<EOS, env: :development
+config.middleware.use Rack::LiveReload
+EOS
+
 environment <<EOS, env: :development
 config.action_mailer.delivery_method = :letter_opener
 EOS

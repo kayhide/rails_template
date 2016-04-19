@@ -1,9 +1,13 @@
 ja:
   header:
-    site_title: <%= app_name.humanize %>
+    site_title: <%= app_name.titleize %>
+  nav:
+    home: ホーム
+    login: ログイン
+    logout: ログアウト
   helpers:
     links:
-      new: 新規登録
+      new: 作成
       show: 詳細
       edit: 編集
       destroy: 削除

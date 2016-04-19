@@ -26,8 +26,11 @@ else
   say 'keep comments: [no]'
 end
 
-if (@locale = ask("locale?")).empty?
+if ENV['USE_LOCALE']
+  @locale = ENV['USE_LOCALE']
+else
   @locale = (ENV['LANG'] || 'en').split('_').first
+  @locale = ask("locale? (default: #{@locale})").presence || @locale
 end
 say "locale: [#{@locale}]"
 
@@ -171,11 +174,8 @@ end
 
 # config/locales
 # ============================================================
-source_paths.each do |dir|
-  Dir[File.join(dir, "**/locales/*#{@locale}.yml")].each do |f|
-    f = Pathname.new(f).relative_path_from(Pathname.new(dir)).to_s
-    template f
-  end
+Dir[File.join(source_paths.last, "config/locales/*#{@locale}.yml")].each do |f|
+  template f
 end
 
 

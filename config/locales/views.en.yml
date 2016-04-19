@@ -1,0 +1,17 @@
+en:
+  header:
+    site_title: <%= app_name.titleize %>
+  nav:
+    home: Home
+    login: Login
+    logout: Logout
+  helpers:
+    links:
+      new: New
+      show: Show
+      edit: Edit
+      destroy: Destroy
+      back: Back
+      cancel: Cancel
+    submit:
+      confirm: Confirm

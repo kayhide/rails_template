@@ -1,0 +1,7 @@
+en:
+  date:
+    formats:
+      default: ! '%Y/%m/%d'
+  datetime:
+    ago: Ago
+    after: After

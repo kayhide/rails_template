@@ -28,7 +28,3 @@ ja:
         other: ! '%{count}年'
     ago: 前
     after: 後
-  nav:
-    home: ホーム
-    login: ログイン
-    logout: ログアウト

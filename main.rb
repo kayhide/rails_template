@@ -201,17 +201,7 @@ end
 EOS
 end
 
-gsub_file 'config/database.yml', /  pool:.*\n/, <<EOS
-  pool: <%= ENV['DB_POOL'] || ENV['MAX_THREADS'] || 5 %>
-  username: #{app_name}
-  password:
-EOS
-
 remove_comments 'config/database.yml'
-
-create_file '.env.sample', <<EOS
-export DB_POOL=5
-EOS
 
 
 # rspec

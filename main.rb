@@ -134,6 +134,7 @@ end
 
 gsub_file 'Gemfile', '"', '\''
 
+run 'bundle install -j4'
 
 # config/application.rb
 # ============================================================

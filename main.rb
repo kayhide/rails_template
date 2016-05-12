@@ -179,8 +179,11 @@ end
 
 # config/locales
 # ============================================================
-Dir[File.join(source_paths.last, "config/locales/*#{@locale}.yml")].each do |f|
-  template f
+source_paths.drop(1).map { |dir| Pathname.new(dir) }.each do |dir|
+  Dir[File.join(dir, "config/locales/*#{@locale}.yml")].each do |f|
+    f = Pathname.new(f).relative_path_from(dir).to_s
+    template f
+  end
 end
 
 

@@ -126,7 +126,7 @@ if @use_capistrano
 end
 
 if @use_heroku
-  gem_group :production, :staging do
+  gem_group :production do
     gem 'rails_12factor'
     gem 'newrelic_rpm'
   end

@@ -194,7 +194,7 @@ gsub_file 'app/assets/javascripts/application.js', /^.*turbolinks.*\n/, ''
 
 # postgresql
 # ============================================================
-if gem_for_database == 'pg'
+if options[:database] == 'postgresql'
   rakefile 'db_create_user.rake', <<'EOS'
 namespace :db do
   desc 'Creates postgres user for all environments.'

@@ -134,8 +134,6 @@ end
 
 gsub_file 'Gemfile', '"', '\''
 
-run 'bundle install -j4'
-
 # config/application.rb
 # ============================================================
 remove_comments 'config/application.rb'
@@ -212,47 +210,10 @@ end
 remove_comments 'config/database.yml'
 
 
-# rspec
-# ============================================================
-generate 'rspec:install'
-
-append_to_file '.rspec', <<EOS
---format=Fuubar
-EOS
-
-inside 'spec' do
-  prepend_to_file 'rails_helper.rb', <<EOS
-require 'simplecov'
-SimpleCov.start 'rails'
-
-EOS
-
-  comment_lines 'rails_helper.rb', 'config.fixture_path'
-  comment_lines 'rails_helper.rb', 'rspec/autorun'
-
-  inject_into_file 'rails_helper.rb', <<EOS, before: /^end$/
-
-  config.before do
-    FactoryGirl.reload
-  end
-EOS
-
-
-  remove_comments 'rails_helper.rb'
-end
-
-remove_dir 'test'
-
-
 # settingslogic
 # ============================================================
 copy_file 'config/settings.yml'
 copy_file 'app/models/settings.rb'
-
-
-# guard
-# ============================================================
-apply 'guard.rb'
 
 
 # unicorn
@@ -262,44 +223,6 @@ create_file 'Procfile' do
   body = <<EOS
 web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 EOS
-end
-
-
-# rails_footnotes
-# ============================================================
-apply 'rails_footnotes.rb'
-
-
-# bootstrap
-# ============================================================
-if @use_bootstrap
-  apply 'bootstrap.rb'
-end
-
-
-# kaminari
-# ============================================================
-generate 'kaminari:config'
-if @use_bootstrap
-  directory File.expand_path('../app/views/kaminari', __FILE__), 'app/views/kaminari'
-else
-  generate 'kaminari:views'
-end
-
-
-# capistrano
-# ============================================================
-if @use_capistrano
-  apply File.expand_path('../capistrano.rb', __FILE__)
-end
-
-
-# remove .keep
-# ============================================================
-Dir['**/.keep'].each do |f|
-  if Dir[File.join(File.dirname(f), '*')].present?
-    remove_file f
-  end
 end
 
 
@@ -315,6 +238,26 @@ EOS
 comment_lines '.gitignore', '.rspec'
 comment_lines '.gitignore', 'config/secrets.yml'
 
-git :init
-git add: '.'
-git commit: '-m "init."'
+
+# gem dependent works
+# ============================================================
+after_bundle do
+  apply 'rspec.rb'
+  apply 'guard.rb'
+  apply 'rails_footnotes.rb'
+  apply 'kaminari.rb'
+  apply 'bootstrap.rb'
+  apply 'capistrano.rb' if @use_capistrano
+
+  Dir['**/.keep'].each do |f|
+    if Dir[File.join(File.dirname(f), '*')].present?
+      remove_file f
+    end
+  end
+end
+
+after_bundle do
+  git :init
+  git add: '.'
+  git commit: '-m "init."'
+end

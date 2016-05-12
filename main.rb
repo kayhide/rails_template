@@ -1,7 +1,6 @@
 source_paths << File.dirname(__FILE__)
 
 @locale = nil
-@use_bootstrap = true
 @use_heroku = false
 @use_capistrano = false
 @keep_comments = false

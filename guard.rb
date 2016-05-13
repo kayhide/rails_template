@@ -1,5 +1,5 @@
 run 'bundle exec guard init'
-gsub_file 'Guardfile', /guard :rspec .* do/, <<EOS.strip
+gsub_file 'Guardfile', /guard :rspec,.* do/, <<EOS.strip
 guard :rspec, cmd: 'bin/rspec' do
 EOS
 

@@ -62,7 +62,7 @@ inject_into_file 'Gemfile', <<EOS, before: /^gem 'rails'/
 ruby '#{RUBY_VERSION}'
 EOS
 
-gem 'unicorn'
+gem 'puma'
 gem 'foreman'
 gem 'slim-rails'
 gem 'kaminari'
@@ -215,14 +215,12 @@ copy_file 'config/settings.yml'
 copy_file 'app/models/settings.rb'
 
 
-# unicorn
+# puma
 # ============================================================
-copy_file 'config/unicorn.rb'
-create_file 'Procfile' do
-  body = <<EOS
-web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+copy_file 'config/puma.rb'
+create_file 'Procfile', <<EOS
+web: bundle exec puma -C config/puma.rb
 EOS
-end
 
 
 # git
